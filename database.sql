@@ -1,5 +1,4 @@
--- public.users table
-CREATE TABLE public.users (
+
     id bigserial NOT NULL,
     "name" text NOT NULL,
     email text NOT NULL,
