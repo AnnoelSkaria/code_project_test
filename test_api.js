@@ -6,8 +6,12 @@ app.use(express.json())//=> obj create to access the request from client side
 //get data
 app.get("/users",async(req,res)=>{
     try{
-        const allTodos=await pool.query("SELECT*FROM USERS");
-        res.json(allTodos.rows);
+        //const allTodos=await pool.query("SELECT*FROM USERS");
+       // const allTodos=await pool.query("select u.name,u.email,u.phone_number,ad.doc_name from users u,uploaded_docs ud,all_docs ad WHERE (u.id=ud.user_id) AND (ud.all_docs_id= ad.id);");
+       // const allTodos=await pool.query(" select u.name,array_to_string(array_agg(ad.doc_name), ',') AS  list_of_docs from users u,uploaded_docs ud,all_docs ad WHERE (u.id=ud.user_id) AND (ud.all_docs_id= ad.id) GROUP BY u.name;");
+       const allTodos=await pool.query(" select u.name,u.email,u.phone_number,array_to_string(array_agg(ad.doc_name), ',') AS  list_of_docs from users u,uploaded_docs ud,all_docs ad WHERE (u.id=ud.user_id) AND (ud.all_docs_id= ad.id) GROUP BY u.name,u.email,u.phone_number;"); 
+       res.json(allTodos.rows);
+
 
     }
     catch(err)
